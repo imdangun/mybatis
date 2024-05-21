@@ -18,6 +18,21 @@ public class Main {
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+			
+			String query = "SELECT user_id, user_name, reg_date FROM users";
+			stmt = conn.prepareStatement(query);
+			rs = stmt.executeQuery();
+			
+			// OR mapping (Object Relation)
+			User user = null;
+			while(rs.next()) {
+				user = new User();
+				user.setUserId(rs.getInt(1));
+				user.setUserName(rs.getString(2));
+				user.setRegDate(rs.getDate(3));
+				
+				System.out.println(user);
+			}
 		} catch(Exception e) {
 			e.printStackTrace();
 		} finally {
